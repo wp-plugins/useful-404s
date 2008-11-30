@@ -3,8 +3,8 @@ Contributors: devbits, skullbit
 Donate link: http://skullbit.com/donate
 Tags: 404, email, errors
 Requires at least: 2.6
-Tested up to: 2.6.5
-Stable tag: 1.2
+Tested up to: 2.7
+Stable tag: 1.3
 
 Create more useful 404 error pages, including email notifications for bad links.
 

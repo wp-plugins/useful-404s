@@ -4,7 +4,7 @@ Plugin Name: Useful 404's
 Plugin URI: http://skullbit.com/wordpress-plugin/useful-404s/
 Description: Create more useful 404 error pages, including email notifications for bad links.  See http://www.alistapart.com/articles/amoreuseful404 for the inspiration behind this plugin.
 Author: Devbits
-Version: 1.2
+Version: 1.3
 
 Settings: 
 1. Mistyped URL/Out-of-date Bookmark
@@ -97,46 +97,46 @@ if( !class_exists('Useful404s') ):
                         <tbody>
                         	<tr valign="top">
                        			 <th scope="row"><label for="mistype_output"><?php _e('Mistyped URL 404 Notice', 'u404');?></label></th>
-                        		<td><textarea name="mistype_output" id="mistype_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['mistype_output'];?></textarea></td>
+                        		<td><textarea name="mistype_output" id="mistype_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['mistype_output']);?></textarea></td>
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="internal_output"><?php _e('Internal Broken Link 404 Notice', 'u404');?></label></th>
-                        		<td><textarea name="internal_output" id="internal_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['internal_output'];?></textarea></td>
+                        		<td><textarea name="internal_output" id="internal_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['internal_output']);?></textarea></td>
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="internal_subject"><?php _e('Internal Broken Link Email', 'u404');?></label></th>
-                        		<td><label for="internal_subject">Subject:</label><br /><input type="text" name="internal_subject" id="internal_subject" value="<?php echo $u404['internal_email']['subject'];?>" style="width:90%" /><br />
+                        		<td><label for="internal_subject">Subject:</label><br /><input type="text" name="internal_subject" id="internal_subject" value="<?php echo stripslashes($u404['internal_email']['subject']);?>" style="width:90%" /><br />
                                 <label for="internal_msg">Message:</label><br />
-                                <textarea name="internal_msg" id="internal_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['internal_email']['msg'];?></textarea><br />
+                                <textarea name="internal_msg" id="internal_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['internal_email']['msg']);?></textarea><br />
                                 <label><input type="checkbox" name="internal_disable" value="1"<?php if($u404['internal_email']['disable'])echo ' checked="checked"';?> /> <?php _e('Disable Email Notice');?></label></td>
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="search_output"><?php _e('Search Engine Broken Link 404 Notice', 'u404');?></label></th>
-                        		<td><textarea name="search_output" id="search_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['search_output'];?></textarea></td>
+                        		<td><textarea name="search_output" id="search_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['search_output']);?></textarea></td>
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="search_subject"><?php _e('Search Engine Broken Link Email', 'u404');?></label></th>
                         		<td><label for="search_subject">Subject:</label><br /><input type="text" name="search_subject" id="search_subject" value="<?php echo $u404['search_email']['subject'];?>"  style="width:90%" /><br />
                                 <label for="search_msg">Message:</label><br />
-                                <textarea name="search_msg" id="search_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['search_email']['msg'];?></textarea><br />
+                                <textarea name="search_msg" id="search_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['search_email']['msg']);?></textarea><br />
                                 <label><input type="checkbox" name="search_disable" value="1"<?php if($u404['search_email']['disable'])echo ' checked="checked"';?> /> <?php _e('Disable Email Notice');?></label></td>
                         	</tr>
                             
                             <tr valign="top">
                        			 <th scope="row"><label for="external_output"><?php _e('External Broken Link 404 Notice', 'u404');?></label></th>
-                        		<td><textarea name="external_output" id="external_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['external_output'];?></textarea></td>
+                        		<td><textarea name="external_output" id="external_output" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['external_output']);?></textarea></td>
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="external_subject"><?php _e('External Broken Link Email', 'u404');?></label></th>
-                        		<td><label for="external_subject">Subject:</label><br /><input type="text" name="external_subject" id="external_subject" value="<?php echo $u404['external_email']['subject'];?>" style="width:90%" /><br />
+                        		<td><label for="external_subject">Subject:</label><br /><input type="text" name="external_subject" id="external_subject" value="<?php echo stripslashes($u404['external_email']['subject']);?>" style="width:90%" /><br />
                                 <label for="external_msg">Message:</label><br />
-                                <textarea name="external_msg" id="external_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['external_email']['msg'];?></textarea><br />
+                                <textarea name="external_msg" id="external_msg" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['external_email']['msg']);?></textarea><br />
                                 <label><input type="checkbox" name="external_disable" value="1"<?php if($u404['external_email']['disable'])echo ' checked="checked"';?> /> <?php _e('Disable Email Notice');?></label></td>
                         	</tr>
                             
                              <tr valign="top">
                        			 <th scope="row"><label for="search_list"><?php _e('Search Engine URL List', 'u404');?></label></th>
-                        		<td><textarea name="search_list" id="search_list" cols="40" rows="20" style="width:90%;height:125px;"><?php echo $u404['search_list'];?></textarea></td>
+                        		<td><textarea name="search_list" id="search_list" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['search_list']);?></textarea></td>
                         	</tr>
                          </tbody>
                      </table>
@@ -189,6 +189,7 @@ if( !class_exists('Useful404s') ):
 							$output = $output. '<p>email error</p>';
 				endif;						
 			endif;
+			$output = stripslashes($output);
 			return $this->Coded($output, $ref, $req, $search);
 		}
 	}//END Class Useful404s
