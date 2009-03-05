@@ -4,7 +4,7 @@ Donate link: http://skullbit.com/donate
 Tags: 404, email, errors
 Requires at least: 2.6
 Tested up to: 2.7.1
-Stable tag: 1.4
+Stable tag: 1.5
 
 Create more useful 404 error pages, including email notifications for bad links.
 
@@ -12,7 +12,7 @@ Create more useful 404 error pages, including email notifications for bad links.
 
 Create more useful 404 error pages, including email notifications for bad links.  See http://www.alistapart.com/articles/amoreuseful404 for the inspiration behind this plugin.
 
-*NEW* Now able to ignore specific keywords from sending notification emails.
+**NEW** Now able to ignore specific keywords from sending notification emails.
 
 == Installation ==
 

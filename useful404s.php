@@ -4,7 +4,7 @@ Plugin Name: Useful 404's
 Plugin URI: http://skullbit.com/wordpress-plugin/useful-404s/
 Description: Create more useful 404 error pages, including email notifications for bad links.  See http://www.alistapart.com/articles/amoreuseful404 for the inspiration behind this plugin.
 Author: Devbits
-Version: 1.4
+Version: 1.5
 
 Settings: 
 1. Mistyped URL/Out-of-date Bookmark
@@ -50,7 +50,7 @@ if( !class_exists('Useful404s') ):
 								'search_email'		=> array('subject' => 'Broken link on {search}', 'msg' => "There appears to be a broken link on the Search Engine, {search}. Someone was trying to get to {404} from that page.  Please take a look and see if this can be fixed.", 'disable'=>1),
 								'external_output'	=> "<p>Sorry, but the page you were trying to get to, {404}, does not exists.</p>\n<p>Apparently, there is a broken link on the page you just came from. We have been notified and will attempt to contact the owner of that page and let them know about the error.</p>\n<p>You may want to try searching this site or using our site map to find what you are looking for.</p>",
 								'external_email'	=> array('subject' => 'Broken link on External Domain', 'msg' => "BROKEN LINK ON EXTERNAL WEBSITE.\n\nThere appears to be a broken link on the page, {ref}. Someone was trying to get to {404} from that page. Why don't you take a look at it and see if you can contact the page owner and let them know about it?", 'disable'=>0),
-								'search_list'	=> 'google.com,yahoo.com',
+								'search_list'	=> 'google.com,yahoo.com,altavista.com,dogpile.com,ask.com,live.com,alltheweb.com,lycos.com,a9.com,aol.com',
 								'ignore'		=> 'wp-admin,favicon.ico'
 							);
 			if( !get_option('useful404s') ): #Set Defaults if no values exist
@@ -168,7 +168,7 @@ if( !class_exists('Useful404s') ):
 			$u404 = get_option( 'useful404s' );
 			$ignore = explode(',',$u404['ignore']);
 			foreach($ignore as $ig):
-				if( strpos($uri, $ig) !== false )
+				if( strpos($uri, trim($ig)) !== false )
 					return true;
 			endforeach;			
 			return false;
