@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: devbits, skullbit
+Contributors: devbit, skullbit
 Donate link: http://skullbit.com/donate
 Tags: 404, email, errors
 Requires at least: 2.6
