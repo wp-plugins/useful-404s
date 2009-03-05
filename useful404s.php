@@ -4,7 +4,7 @@ Plugin Name: Useful 404's
 Plugin URI: http://skullbit.com/wordpress-plugin/useful-404s/
 Description: Create more useful 404 error pages, including email notifications for bad links.  See http://www.alistapart.com/articles/amoreuseful404 for the inspiration behind this plugin.
 Author: Devbits
-Version: 1.3
+Version: 1.4
 
 Settings: 
 1. Mistyped URL/Out-of-date Bookmark
@@ -50,7 +50,8 @@ if( !class_exists('Useful404s') ):
 								'search_email'		=> array('subject' => 'Broken link on {search}', 'msg' => "There appears to be a broken link on the Search Engine, {search}. Someone was trying to get to {404} from that page.  Please take a look and see if this can be fixed.", 'disable'=>1),
 								'external_output'	=> "<p>Sorry, but the page you were trying to get to, {404}, does not exists.</p>\n<p>Apparently, there is a broken link on the page you just came from. We have been notified and will attempt to contact the owner of that page and let them know about the error.</p>\n<p>You may want to try searching this site or using our site map to find what you are looking for.</p>",
 								'external_email'	=> array('subject' => 'Broken link on External Domain', 'msg' => "BROKEN LINK ON EXTERNAL WEBSITE.\n\nThere appears to be a broken link on the page, {ref}. Someone was trying to get to {404} from that page. Why don't you take a look at it and see if you can contact the page owner and let them know about it?", 'disable'=>0),
-								'search_list'	=> 'google.com,yahoo.com'
+								'search_list'	=> 'google.com,yahoo.com',
+								'ignore'		=> 'wp-admin,favicon.ico'
 							);
 			if( !get_option('useful404s') ): #Set Defaults if no values exist
 				add_option( 'useful404s', $default );
@@ -78,6 +79,7 @@ if( !class_exists('Useful404s') ):
 			$update["external_output"] = $_POST['external_output'];
 			$update["external_email"] = array( 'subject'=>$_POST['external_subject'], 'msg'=>$_POST['external_msg'], 'disable'=>$_POST['external_disable'] );
 			$update["search_list"] = $_POST['search_list'];
+			$update["ignore"] = $_POST['ignore'];
 			update_option( 'useful404s', $update );
 			$_POST['notice'] = __('Settings Saved', 'u404');
 		}
@@ -136,7 +138,12 @@ if( !class_exists('Useful404s') ):
                             
                              <tr valign="top">
                        			 <th scope="row"><label for="search_list"><?php _e('Search Engine URL List', 'u404');?></label></th>
-                        		<td><textarea name="search_list" id="search_list" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['search_list']);?></textarea></td>
+                        		<td><textarea name="search_list" id="search_list" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['search_list']);?></textarea><br /><small><?php _e('Enter Search Engine Domains seperated by commas.','u404');?></small></td>
+                        	</tr>
+                            
+                            <tr valign="top">
+                       			 <th scope="row"><label for="ignore"><?php _e('Ignore List', 'u404');?></label></th>
+                        		<td><textarea name="ignore" id="ignore" cols="40" rows="20" style="width:90%;height:125px;"><?php echo stripslashes($u404['ignore']);?></textarea><br /><small><?php _e('Seperate keywords with commas for the plugin to ignore.  Any 404 url containing these keywords will not trigger a notification email.','u404');?></small></td>
                         	</tr>
                          </tbody>
                      </table>
@@ -157,6 +164,16 @@ if( !class_exists('Useful404s') ):
 			return $out;
 		}
 		
+		function Ignore($uri){
+			$u404 = get_option( 'useful404s' );
+			$ignore = explode(',',$u404['ignore']);
+			foreach($ignore as $ig):
+				if( strpos($uri, $ig) !== false )
+					return true;
+			endforeach;			
+			return false;
+		}
+		
 		function Output(){
 			$u404 = get_option( 'useful404s' );
 			$ref = $_SERVER['HTTP_REFERER'];
@@ -166,7 +183,7 @@ if( !class_exists('Useful404s') ):
 				$output = $u404['mistype_output'];
 			if( strpos($ref, $_SERVER['SERVER_NAME']) !== false ): //INTERNAL LINK 404
 				$output = $u404['internal_output'];
-				if( !$u404['internal_email']['disable'] )
+				if( !$u404['internal_email']['disable'] && !$this->Ignore($req) )
 					if (!wp_mail( get_option('admin_email'), $this->Coded($u404['internal_email']['subject'], $ref, $req, $search), $this->Coded($u404['internal_email']['msg'], $ref, $req, $search) ) )
 					$output = $output. '<p>email error</p>';
 			endif;
@@ -178,13 +195,13 @@ if( !class_exists('Useful404s') ):
 				endforeach;
 				if( $search ): //SEARCH ENGINE 404
 					$output = $u404['search_output'];
-					if( !$u404['search_email']['disable'] ):
+					if( !$u404['search_email']['disable'] && !$this->Ignore($req) ):
 						if(!wp_mail( get_option('admin_email'), $this->Coded($u404['search_email']['subject'], $ref, $req, $search), $this->Coded($u404['search_email']['msg'], $ref, $req, $search) ) )
 						$output = $output. '<p>email error</p>';
 					endif;
 				else: //EXTERNAL LINK 404
 					$output = $u404['external_output'];
-					if( !$u404['external_email']['disable'] )
+					if( !$u404['external_email']['disable'] && !$this->Ignore($req) )
 						if(!wp_mail( get_option('admin_email'), $this->Coded($u404['external_email']['subject'], $ref, $req, $search), $this->Coded($u404['external_email']['msg'], $ref, $req, $search) ))
 							$output = $output. '<p>email error</p>';
 				endif;						
